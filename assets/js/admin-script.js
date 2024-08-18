@@ -25,4 +25,31 @@
         } )
     } )
 
+    $( wrappers.settings ).find( '.field-upload-wrapper .upload-box' ).each( function ( index, item ) {
+        let _      = $( item )
+        let button = _.find( 'button.upload-button' )
+        let input  = _.find( 'input' )
+
+        button.on( 'click', function ( e ) {
+            e.preventDefault()
+
+            let image = wp.media( {
+                title: 'Upload Image',
+            } )
+
+            image.open()
+
+            image.on( 'select', function ( e ) {
+                let { url } = image.state().get( 'selection' ).first().toJSON()
+                input.val( url );
+                _.append( '<button type="button" class="reset-button">' + WC_Invoice_Config.reset_button + '</button>' )
+
+                _.find( '.reset-button' ).on( 'click', function () {
+                    input.val( '' )
+                    $( this ).remove()
+                } )
+            } );
+        } )
+    } )
+
 } )( jQuery )

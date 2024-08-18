@@ -29,6 +29,8 @@ define( 'WC_INVOICE_PLUGIN_DIR', plugin_dir_path( WC_INVOICE_PLUGIN_FILE ) );
 define( 'WC_INVOICE_PLUGIN_URL', plugin_dir_url( WC_INVOICE_PLUGIN_FILE ) );
 define( 'WC_INVOICE_PLUGIN_VER', '1.0.0' );
 
+define( 'WC_INVOICE_PLUGIN_ADMIN_DIR', trailingslashit( WC_INVOICE_PLUGIN_DIR . 'includes/admin/' ) );
+
 
 // Load plugin textdomain for translate.
 load_plugin_textdomain( 'wc-invoice', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -53,7 +55,7 @@ if ( ! class_exists( 'WC_Invoice' ) ) {
 
 		public function includes() {
 			require_once WC_INVOICE_PLUGIN_DIR . 'includes/wc-invoice-enqueue.php';
-			require_once WC_INVOICE_PLUGIN_DIR . 'includes/admin/wc-invoice-admin.php';
+			require_once WC_INVOICE_PLUGIN_ADMIN_DIR . 'wc-invoice-admin.php';
 		}
 	}
 }

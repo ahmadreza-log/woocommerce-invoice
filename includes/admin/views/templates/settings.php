@@ -8,7 +8,7 @@ $sections = [
 	'tag-template'     => __( 'Tag Template', 'woocommerce-invoice' ),
 	'customer-service' => __( 'Customer Service', 'woocommerce-invoice' ),
 ];
-$sections = apply_filters( 'woocommerce_invoice_settings_sections', $sections );
+
 ?>
 
 <div class="sidebar">
@@ -27,9 +27,11 @@ $sections = apply_filters( 'woocommerce_invoice_settings_sections', $sections );
     <div class="menu">
         <ul>
 			<?php foreach ( $sections as $slug => $item ) {
+
 				$classes   = [ 'sidebar-item', 'item-' . esc_attr( $slug ) ];
 				$classes[] = $item == current( $sections ) ? 'active' : '';
 				$classes   = implode( ' ', $classes );
+
 				?>
                 <li class="<?php echo esc_attr( $classes ); ?>">
                     <a href="#<?php echo esc_attr( $slug ); ?>">
@@ -43,16 +45,69 @@ $sections = apply_filters( 'woocommerce_invoice_settings_sections', $sections );
 
 <main class="sections">
 	<?php foreach ( $sections as $slug => $item ) {
+
 		$classes   = [ 'section-' . esc_attr( $slug ) ];
 		$classes[] = $item == current( $sections ) ? 'active' : '';
 		$classes   = implode( ' ', $classes );
-		$file      = WC_INVOICE_PLUGIN_DIR . 'includes/admin/views/templates/setting.template.' . $slug . '.php';
+
+		$file = WC_INVOICE_PLUGIN_ADMIN_DIR . 'options/' . $slug . '.php';
+
 		?>
         <section id="<?php echo esc_attr( $slug ); ?>" class="<?php echo esc_attr( $classes ); ?>">
             <h1><?php echo esc_html( $item ); ?></h1>
+
 			<?php if ( file_exists( $file ) ) {
-				require_once $file;
+				$options = require_once $file;
+				if ( count( $options ) > 0 ) { ?>
+
+                    <form novalidate method="post" enctype="multipart/form-data">
+						<?php wp_nonce_field( 'wc-invoice-save' ) ?>
+						<?php foreach ( $options as $option ) {
+							$field_file = WC_INVOICE_PLUGIN_ADMIN_DIR . 'fields/' . $option[ 'type' ] . '.php';
+
+							if ( isset( $option[ 'id' ] ) && $option[ 'id' ] !== '' ) {
+
+								if ( file_exists( $field_file ) ) { ?>
+                                    <div class="row form-row field-<?php echo esc_attr( $option[ 'type' ] ); ?>">
+                                        <div class="field-wrapper field-<?php echo esc_attr( $option[ 'type' ] ); ?>-wrapper">
+
+											<?php if ( isset( $option[ 'title' ] ) ) { ?>
+                                                <label for="<?php echo esc_attr( $option[ 'id' ] ) ?>"><?php echo esc_html( $option[ 'title' ] ) ?></label>
+											<?php } ?>
+
+                                            <div>
+
+												<?php require $field_file; ?>
+
+												<?php if ( isset( $option[ 'desc' ] ) ) { ?>
+                                                    <div class="field-desc">
+														<?php echo $option[ 'desc' ]; ?>
+                                                    </div>
+												<?php } ?>
+
+                                            </div>
+                                        </div>
+                                    </div>
+								<?php } else { ?>
+                                    <div class="row field-error">
+										<?php printf( esc_html__( 'There is no field with type %s.', 'woocommerce-invoice' ), $option[ 'type' ] ); ?>
+                                    </div>
+								<?php }
+
+							} else { ?>
+
+                                <div class="row field-error">
+									<?php esc_html_e( 'The `id` value is required.', 'woocommerce-invoice' ); ?>
+                                </div>
+
+							<?php }
+						} ?>
+						<?php submit_button(); ?>
+                    </form>
+
+				<?php }
 			} ?>
+
         </section>
 	<?php } ?>
 </main>

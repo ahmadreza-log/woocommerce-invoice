@@ -22,4 +22,22 @@ return [
 		'type'  => 'textarea',
 		'desc'  => __( 'You can write a few lines about the store, you can also enter the phone number or address of the store.', 'woocommerce-invoice' ),
 	],
+	[
+		'id'    => 'store-signature',
+		'title' => __( 'Store Signature', 'woocommerce-invoice' ),
+		'type'  => 'upload',
+		'desc'  => __( 'Upload your store\'s signature, this signature will be shown in random position on all invoices.', 'woocommerce-invoice' ),
+	],
+	[
+		'id'    => 'invoice-prefix',
+		'title' => __( 'Invoice Prefix', 'woocommerce-invoice' ),
+		'type'  => 'text',
+		'desc'  => __( 'You can consider a prefix for each invoice number.', 'woocommerce-invoice' ),
+	],
+	[
+		'id'    => 'invoice-suffix',
+		'title' => __( 'Invoice Suffix', 'woocommerce-invoice' ),
+		'type'  => 'text',
+		'desc'  => __( 'You can consider a suffix for each invoice number.', 'woocommerce-invoice' ),
+	],
 ];

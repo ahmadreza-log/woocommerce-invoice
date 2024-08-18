@@ -52,7 +52,8 @@ if ( ! class_exists( 'WC_Invoice' ) ) {
 		}
 
 		public function includes() {
-			require_once WC_INVOICE_PLUGIN_DIR . 'includes/wc-invoice-admin.php';
+			require_once WC_INVOICE_PLUGIN_DIR . 'includes/wc-invoice-enqueue.php';
+			require_once WC_INVOICE_PLUGIN_DIR . 'includes/admin/wc-invoice-admin.php';
 		}
 	}
 }

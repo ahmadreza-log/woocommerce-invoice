@@ -64,6 +64,8 @@
       box-sizing: border-box;
       background: white;
       border-radius: 16px;
+      position: sticky;
+      top: 42px;
 
       .logo {
         display: flex;

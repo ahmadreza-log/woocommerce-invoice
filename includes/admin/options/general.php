@@ -40,4 +40,28 @@ return [
 		'type'  => 'text',
 		'desc'  => __( 'You can consider a suffix for each invoice number.', 'woocommerce-invoice' ),
 	],
+	[
+		'id'    => 'show-discount',
+		'title' => __( 'Show Discount', 'woocommerce-invoice' ),
+		'type'  => 'switcher',
+		'desc'  => __( 'If the customer has used the discount code for the purchase, the discounted amount will be displayed in the invoice.', 'woocommerce-invoice' ),
+	],
+	[
+		'id'    => 'show-thumbnail',
+		'title' => __( 'Show Thumbnail', 'woocommerce-invoice' ),
+		'type'  => 'switcher',
+		'desc'  => __( 'Display the image of the product index in the invoice (note that the best printing mode if this option is enabled is color printing.)', 'woocommerce-invoice' ),
+	],
+	[
+		'id'    => 'show-in-checkout',
+		'title' => __( 'Show In Checkout Page', 'woocommerce-invoice' ),
+		'type'  => 'switcher',
+		'desc'  => __( 'Add "Would you like to receive an invoice" option on the checkout page.', 'woocommerce-invoice' ),
+	],
+	[
+		'id'    => 'show-in-account',
+		'title' => __( 'Show In Account Page', 'woocommerce-invoice' ),
+		'type'  => 'switcher',
+		'desc'  => __( 'Adding the option to receive an invoice on the user account orders page.', 'woocommerce-invoice' ),
+	],
 ];

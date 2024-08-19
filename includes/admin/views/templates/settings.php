@@ -4,8 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 $sections = [
 	'general'          => __( 'General Options', 'woocommerce-invoice' ),
-	'invoice-template' => __( 'Invoice Template', 'woocommerce-invoice' ),
-	'tag-template'     => __( 'Tag Template', 'woocommerce-invoice' ),
+	'styles'           => __( 'Styles', 'woocommerce-invoice' ),
 	'customer-service' => __( 'Customer Service', 'woocommerce-invoice' ),
 ];
 
@@ -44,25 +43,26 @@ $sections = [
 </div>
 
 <main class="sections">
-	<?php foreach ( $sections as $slug => $item ) {
+    <form novalidate method="post" enctype="multipart/form-data">
+		<?php wp_nonce_field( 'wc-invoice-save' ) ?>
 
-		$classes   = [ 'section-' . esc_attr( $slug ) ];
-		$classes[] = $item == current( $sections ) ? 'active' : '';
-		$classes   = implode( ' ', $classes );
+		<?php foreach ( $sections as $slug => $item ) {
 
-		$file = WC_INVOICE_PLUGIN_ADMIN_DIR . 'options/' . $slug . '.php';
+			$classes   = [ 'section-' . esc_attr( $slug ) ];
+			$classes[] = $item == current( $sections ) ? 'active' : '';
+			$classes   = implode( ' ', $classes );
 
-		?>
-        <section id="<?php echo esc_attr( $slug ); ?>" class="<?php echo esc_attr( $classes ); ?>">
-            <h1><?php echo esc_html( $item ); ?></h1>
+			$file = WC_INVOICE_PLUGIN_ADMIN_DIR . 'options/' . $slug . '.php';
 
-			<?php if ( file_exists( $file ) ) {
-				$options = require_once $file;
-				if ( count( $options ) > 0 ) { ?>
+			?>
+            <section id="<?php echo esc_attr( $slug ); ?>" class="<?php echo esc_attr( $classes ); ?>">
+                <h1><?php echo esc_html( $item ); ?></h1>
 
-                    <form novalidate method="post" enctype="multipart/form-data">
-						<?php wp_nonce_field( 'wc-invoice-save' ) ?>
-						<?php foreach ( $options as $option ) {
+				<?php if ( file_exists( $file ) ) {
+					$options = require_once $file;
+					$options = apply_filters( 'woocommerce_invoice_settings_' . $slug . '_items', $options );
+					if ( count( $options ) > 0 ) {
+						foreach ( $options as $option ) {
 							$field_file = WC_INVOICE_PLUGIN_ADMIN_DIR . 'fields/' . $option[ 'type' ] . '.php';
 
 							if ( isset( $option[ 'id' ] ) && $option[ 'id' ] !== '' ) {
@@ -76,7 +76,6 @@ $sections = [
 											<?php } ?>
 
                                             <div>
-
 												<?php require $field_file; ?>
 
 												<?php if ( isset( $option[ 'desc' ] ) ) { ?>
@@ -93,21 +92,19 @@ $sections = [
 										<?php printf( esc_html__( 'There is no field with type %s.', 'woocommerce-invoice' ), $option[ 'type' ] ); ?>
                                     </div>
 								<?php }
-
 							} else { ?>
-
                                 <div class="row field-error">
 									<?php esc_html_e( 'The `id` value is required.', 'woocommerce-invoice' ); ?>
                                 </div>
-
 							<?php }
 						} ?>
+
 						<?php submit_button(); ?>
-                    </form>
 
-				<?php }
-			} ?>
+					<?php }
+				} ?>
 
-        </section>
-	<?php } ?>
+            </section>
+		<?php } ?>
+    </form>
 </main>
